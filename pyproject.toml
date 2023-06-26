@@ -1,0 +1,15 @@
+[build-system]
+requires = ['setuptools', 'wheel']
+build-backend = 'setuptools.build_meta'
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+#addopts = "-ra -q --cov=axiom --cov-report html"
+#addopts = "-ra -q --cov=axiom --cov-report term --cov-report html"
+testpaths = [
+    "tests",
+]
+markers = [
+    "slow",
+]
+

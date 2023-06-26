@@ -1,0 +1,2 @@
+[console_scripts]
+apt = apt.__main__:main
