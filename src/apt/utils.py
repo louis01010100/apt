@@ -2,6 +2,7 @@ import gzip
 import json
 import logging
 import pickle
+import shutil
 import sys
 from pathlib import Path
 
@@ -10,6 +11,28 @@ import numpy as np
 import pandas as pd
 
 from . import config
+
+
+def find_apt_cmds(apt_cmds, bin_dirs):
+
+    def find_cmd_path(cmd, bin_dir_list):
+        for bin_dir in bin_dir_list:
+            cmd_path = shutil.which(cmd, path=bin_dir)
+            if cmd_path:
+                return cmd_path
+
+        return None
+
+    apt_cmd_paths = {}
+    for cmd in apt_cmds:
+        cmd_path = find_cmd_path(cmd, bin_dirs)
+        if not cmd_path:
+            utils.error(
+                f'Error: cannot find needed APT program {cmd}, '
+                f'set the environment variable AXIOM_TOP to its location,'
+                f'or specify the APT bin folder using --apt-bin-dir,')
+        apt_cmd_paths[cmd] = cmd_path
+    return apt_cmd_paths
 
 
 def euclidean_distance(v1, v2):

@@ -3,8 +3,6 @@ from importlib import resources
 
 BIN_DIRS = [
     '/opt/apt/bin',
-    '/nfs/falcon/bin',
-    '/nfs/falcon/vcf',
 ]
 
 APT_PROGRAMS = [
@@ -25,13 +23,7 @@ APT_PROGRAMS = [
 
 BANNER_WIDTH = 50
 
-UTILITIES = [
-    'R',
-    'gnuplot',
-    'enscript',
-    'gs',
-]
-
+RARE_HET_REPORT_FILENAME = 'AxiomGT1.rare_het.report.txt'
 FLOATING_POINT_PRECISION = 5
 CN_REGION_CALLS_FILENAME = 'AxiomCNVMix.cnregioncalls.txt'
 ALLELE_TRANSLATION_DIRNAME = 'allele_translation'
