@@ -658,10 +658,11 @@ class Apt():
         calls_file,
         annotation_file,
         plink_file,
-        snp_list_file,
         pedigree_file,
+        snp_list_file=None,
     ):
         executable = self.cmd_paths['apt-format-result']
+
         cmd = (
             ''
             f"{executable}\n"
@@ -669,11 +670,13 @@ class Apt():
             f"    --calls-file           {calls_file}\n"
             f"    --annotation-file      {annotation_file}\n"
             f"    --export-chr-shortname True \n"
-            f"    --snp-list-file        {snp_list_file}\n"
             f"    --snp-identifier-column Affy_SNP_ID\n"
             f"    --export-plinkt-file    {plink_file}\n"
             f"    --pedigree-file        {pedigree_file}\n"
             '')
+        if snp_list_file:
+
+            cmd += f"    --snp-list-file        {snp_list_file}\n"
 
         return Command(cmd, check_log=True)
 

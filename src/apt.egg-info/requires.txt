@@ -1,7 +1,2 @@
 polars>=0.17
-sqlalchemy==1.4.47
-matplotlib>=3.2.0
 humanfriendly==10.0
-scipy>=1.10
-colorcet>=3
-vcf

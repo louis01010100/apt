@@ -268,17 +268,17 @@ class Workflow():
         snv_dir: Path,
         output_dir: Path,
         lib_dir: Path,
-        vcf: bool,
-        plink: bool,
+        export_vcf: bool,
+        export_plink: bool,
     ):
         annotdb_file = utils.find_file(lib_dir, '*annot.db')
 
-        if vcf:
+        if export_vcf:
             vcf_dir = output_dir / 'vcf'
-            self._export_vcf(self, snv_dir, vcf_dir, annotdb_file)
-        if plink:
+            self._export_vcf(snv_dir, vcf_dir, annotdb_file)
+        if export_plink:
             plink_dir = output_dir / 'plink'
-            self._export_plink(self, snv_dir, plink_dir, annotdb_file)
+            self._export_plink(snv_dir, plink_dir, annotdb_file)
 
     def _export_vcf(self, snv_dir: Path, output_dir: Path,
                     annotdb_file: Path):
@@ -287,7 +287,7 @@ class Workflow():
 
         tmp_vcf = output_dir / 'AxiomGT1.vcf.tmp'
 
-        calls_file = snv_dir / cofnig.CALLS_FILENAME
+        calls_file = snv_dir / config.CALLS_FILENAME
         performance_file = snv_dir / config.PERFORMANCE_FILENAME
 
         cmd = self.apt.apt_format_result_vcf(
@@ -347,11 +347,10 @@ class Workflow():
 
         cmd = self.apt.apt_format_result_plink(
             output_path=output_dir,
-            calls_file=self.workspace.snv_dir / config.CALLS_FILENAME,
+            calls_file=snv_dir / config.CALLS_FILENAME,
             annotation_file=annotdb_file,
             plink_file=plink_file,
-            snp_list_file=self.workspace.snv_dir
-            / config.RECOMMENDED_FILENAME,
+            snp_list_file=snv_dir / config.RECOMMENDED_FILENAME,
             pedigree_file=output_dir / config.PEDIGREE_FILENAME,
         )
 
