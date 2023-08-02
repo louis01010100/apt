@@ -2,6 +2,7 @@ import gzip
 import json
 import logging
 import pickle
+import re
 import shutil
 import sys
 from pathlib import Path
@@ -11,6 +12,8 @@ import numpy as np
 import pandas as pd
 
 from . import config
+
+PROBESET_ID_PTN = re.compile(r'^((?:AX|AFFX-SP|AFFX-NP)-\d+).*$')
 
 
 def find_apt_cmds(apt_cmds, bin_dirs):
@@ -452,3 +455,81 @@ def summaries_iter(filepath):
                 'signals': bag,
                 'samples': samples,
             }
+
+
+def subset_file(input_file: Path, output_file: Path, probeset_ids: set):
+
+    with input_file.open('rt') as ifh, output_file.open('wt') as ofh:
+        for line in ifh:
+            if line.startswith('#'):
+                ofh.write(line)
+            ofh.write(line)    # write header
+            break
+
+        for line in ifh:
+            id_ = line.split('\t', 1)[0]
+
+            match = PROBESET_ID_PTN.match(id_)
+
+            if not match:
+                raise Exception(input_file)
+
+            probeset_id = match.group(1)
+            if probeset_id in probeset + ids:
+                ofh.write(line)
+
+
+def merge_static_column_file(
+    default_file: Path,
+    modified_file: Path,
+    merged_file: Path,
+    improved_probesets: set,
+):
+
+    norm_data = {}
+
+    with modified_file.open('rt') as fd:
+
+        for line in fd:
+            if line.startswith('#'):
+                # exclude comment
+                continue
+            # exlcude header
+            break
+
+        for line in fd:
+            line = line.strip()
+            key = line.split('\t', 1)[0]
+            norm_data[key] = line
+
+    with merged_file.open('wt') as ofd, default_file.open('rt') as ifd:
+
+        for line in ifd:
+            if line.startswith('#'):
+                ofd.write(line)
+                continue
+            ofd.write(line)
+            break
+
+        for line in ifd:
+            line = line.strip()
+            key = line.split('\t', 1)[0]
+
+            match = PROBESET_ID_PTN.match(key)
+            assert match
+
+            psid = match.group(1)
+
+            v = norm_data.pop(key, None)
+
+            if psid in improved_probesets:
+                assert v, key
+                ofd.write(v)
+                ofd.write('\n')
+            else:
+                ofd.write(line)
+                ofd.write('\n')
+
+        for k, v in norm_data.items():
+            ofd.write(v)
+            ofd.write('\n')

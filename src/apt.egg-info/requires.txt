@@ -1,2 +1,0 @@
-polars>=0.17
-humanfriendly==10.0
