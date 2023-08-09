@@ -140,7 +140,6 @@ class Workflow():
 
     def genotype_summary(
         self,
-        probeset_ids_file: Path,
         summary_file: Path,
         trustcheck_file: Path,
         gender_file: Path,
@@ -150,7 +149,6 @@ class Workflow():
     ):
 
         self.apt.apt_summary_genotype_axiom(
-            probeset_ids_file=probeset_ids_file,
             args_file=snv_args.step2_args_file,
             summary_file=summary_file,
             trustcheck_file=trustcheck_file,

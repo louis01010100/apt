@@ -463,6 +463,7 @@ def subset_file(input_file: Path, output_file: Path, probeset_ids: set):
         for line in ifh:
             if line.startswith('#'):
                 ofh.write(line)
+                continue
             ofh.write(line)    # write header
             break
 
@@ -472,18 +473,18 @@ def subset_file(input_file: Path, output_file: Path, probeset_ids: set):
             match = PROBESET_ID_PTN.match(id_)
 
             if not match:
-                raise Exception(input_file)
+                raise Exception(line[0:78])
 
             probeset_id = match.group(1)
-            if probeset_id in probeset + ids:
+            if probeset_id in probeset_ids:
                 ofh.write(line)
 
 
 def merge_static_column_file(
-    default_file: Path,
-    modified_file: Path,
-    merged_file: Path,
-    improved_probesets: set,
+        default_file: Path,
+        modified_file: Path,
+        merged_file: Path,
+        improved_probesets: set = set(),
 ):
 
     norm_data = {}
@@ -522,13 +523,14 @@ def merge_static_column_file(
 
             v = norm_data.pop(key, None)
 
-            if psid in improved_probesets:
+            if not improved_probesets and v:
+                ofd.write(v)
+            elif psid in improved_probesets:
                 assert v, key
                 ofd.write(v)
-                ofd.write('\n')
             else:
                 ofd.write(line)
-                ofd.write('\n')
+            ofd.write('\n')
 
         for k, v in norm_data.items():
             ofd.write(v)

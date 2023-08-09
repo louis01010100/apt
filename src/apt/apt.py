@@ -453,7 +453,6 @@ class Apt():
 
     def apt_summary_genotype_axiom(
         self,
-        probeset_ids_file,
         args_file,
         summary_file,
         trustcheck_file,
@@ -464,6 +463,7 @@ class Apt():
         lib_dir,
         output_dir,
         use_copynumber_call_codes,
+        probeset_ids_file=None,
         rare_het_adjustment=False,
     ):
         log_file = output_dir / 'apt-summary-genotype-axiom.log'
