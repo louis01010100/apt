@@ -83,13 +83,13 @@ CONVERSION_TYPES_PNORM = [
     UNEXPECTED_GENOTYPE_FREQ,
 ]
 
-# 03/17/2022 17:02:41     info,summary,LOG        1       32      0 error(s) and 1 warning(s).
+#`#    info     1 816 | 0 error(s) and 670791 warning(s).'
 APT_STATUS_LINE = re.compile(
     r'^#.+info.+\| ([0-9]+) error\(s\) and (?:[0-9]+) warning\(s\)\.$')
 
 ## plate normalization
 
-RESOURCES_DIR = resources.files('axbp') / 'resources'
+RESOURCES_DIR = resources.files('apt') / 'resources'
 
 FIND_OUTLIERS_SCRIPT = RESOURCES_DIR / 'find_outliers.r'
 PLATE_NORM_REDUCE_SCRIPT = RESOURCES_DIR / 'platenorm_reduce.r'

@@ -227,7 +227,6 @@ class Workflow():
         output_dir: Path,
         multi_posteriors_file: Path = None,
     ):
-
         output_dir.mkdir(parents=True, exist_ok=True)
 
         ps_metrics_cmd = self.apt.ps_metrics(
@@ -258,7 +257,6 @@ class Workflow():
             ps_classification_thresholds=snv_args
             .ps_classification_thresholds,
         )
-
         ps_classification_cmd.execute()
 
     def export_snv(
