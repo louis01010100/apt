@@ -693,6 +693,8 @@ class Command():
     def execute(self, fatal=True):
         cmd = self._cmd
 
+        logging.debug(f'running:\n{cmd}')
+
         cmd = cmd.replace('\n', '')
 
         msg_buffer = []
@@ -725,10 +727,8 @@ class Command():
         elif exit_status == 0 and n_errors == 0:
             return exit_status, msg
         else:
-            print(f'exit_status: {exit_status}, n_errors: {n_errors}')
-            assert False
-
-            # raise Exception(f'Error: {cmd}')
+            logging.info(exit_status)
+            raise Exception(f'Error: {cmd}')
 
     def _apt_crashed(self, apt_log_file):
 
