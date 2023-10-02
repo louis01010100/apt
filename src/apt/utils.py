@@ -485,6 +485,7 @@ def merge_static_column_file(
         modified_file: Path,
         merged_file: Path,
         improved_probesets: set = set(),
+        target_probesets: set = set(),
 ):
 
     norm_data = {}
@@ -522,6 +523,9 @@ def merge_static_column_file(
             psid = match.group(1)
 
             v = norm_data.pop(key, None)
+
+            if target_probesets and psid not in target_probesets:
+                continue
 
             if not improved_probesets and v:
                 ofd.write(v)
