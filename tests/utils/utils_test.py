@@ -5,7 +5,8 @@ import filecmp
 
 def test_merge_static_column_file(tmp_path):
     fixture_dir = Path(
-        __name__).parents[0] / 'fixture_merge_static_column_file'
+        __file__).parents[0] / 'fixture_merge_static_column_file'
+
     default_file = fixture_dir / 'default.tsv'
     mod_file = fixture_dir / 'mod.tsv'
     expected_file = fixture_dir / 'merged.tsv'

@@ -152,4 +152,4 @@ N_JOBS = 1000
 OCEAN_PROBABILITY = 0.00001
 
 CEL_ORDER_PATTERN = re.compile(
-    '^#%affymetrix-algorithm-param-apt-opt-cel-([0-9]+)=(.+\.CEL)$')
+    r'^#%affymetrix-algorithm-param-apt-opt-cel-([0-9]+)=(.+\.CEL)$')
