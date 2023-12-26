@@ -148,6 +148,8 @@ class Workflow():
         skip_qc: bool = False,
     ):
 
+        print(snv_args.rare_het_adjustment)
+
         self.apt.apt_summary_genotype_axiom(
             args_file=snv_args.step2_args_file,
             summary_file=summary_file,
@@ -164,7 +166,7 @@ class Workflow():
 
         if skip_qc:
             return
-        snv_qc(
+        self.snv_qc(
             summary_file=summary_file,
             report_file=output_dir / config.REPORT_FILENAME,
             calls_file=output_dir / config.CALLS_FILENAME,
@@ -284,7 +286,7 @@ class Workflow():
         tmp_vcf = output_dir / 'AxiomGT1.vcf.tmp'
 
         calls_file = snv_dir / config.CALLS_FILENAME
-        performance_file = snv_dir / config.PERFORMANCE_FILENAME
+        performance_file = snv_dir / config.PS_PERFORMANCE_FILENAME
 
         cmd = self.apt.apt_format_result_vcf(
             output_path=output_dir,
