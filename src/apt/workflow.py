@@ -148,8 +148,6 @@ class Workflow():
         skip_qc: bool = False,
     ):
 
-        print(snv_args.rare_het_adjustment)
-
         self.apt.apt_summary_genotype_axiom(
             args_file=snv_args.step2_args_file,
             summary_file=summary_file,
