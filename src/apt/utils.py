@@ -527,10 +527,9 @@ def merge_static_column_file(
             if target_probesets and psid not in target_probesets:
                 continue
 
-            if not improved_probesets and v:
+            if improved_probesets and psid in improved_probesets:
                 ofd.write(v)
-            elif psid in improved_probesets:
-                assert v, key
+            elif v:
                 ofd.write(v)
             else:
                 ofd.write(line)
