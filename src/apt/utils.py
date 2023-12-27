@@ -480,6 +480,33 @@ def subset_file(input_file: Path, output_file: Path, probeset_ids: set):
                 ofh.write(line)
 
 
+def _create_index(data_file):
+    index = dict()
+    with data_file.open('rt') as fh:
+        header_found = False
+        pos = None
+        while True:
+            pos = fh.tell()
+            line = fh.readline()
+
+            if not line:
+                break
+
+            if line.startswith('#'):
+                continue
+
+            if not header_found:
+                header_found = True
+                continue
+
+            key = line.split('\t', 1)[0]
+            index[key] = pos
+
+            pos = fh.tell()
+
+    return index
+
+
 def merge_static_column_file(
         default_file: Path,
         modified_file: Path,
@@ -488,23 +515,10 @@ def merge_static_column_file(
         target_probesets: set = set(),
 ):
 
-    norm_data = {}
+    index = _create_index(modified_file)
 
-    with modified_file.open('rt') as fd:
-
-        for line in fd:
-            if line.startswith('#'):
-                # exclude comment
-                continue
-            # exlcude header
-            break
-
-        for line in fd:
-            line = line.strip()
-            key = line.split('\t', 1)[0]
-            norm_data[key] = line
-
-    with merged_file.open('wt') as ofd, default_file.open('rt') as ifd:
+    with default_file.open('rt') as ifd, modified_file.open(
+            'rt') as xfd, merged_file.open('wt') as ofd:
 
         for line in ifd:
             if line.startswith('#'):
@@ -522,12 +536,18 @@ def merge_static_column_file(
 
             psid = match.group(1)
 
-            v = norm_data.pop(key, None)
-
             if target_probesets and psid not in target_probesets:
                 continue
 
-            if improved_probesets and psid in improved_probesets:
+            if key in index:
+                pos = index.pop(key)
+                xfd.seek(pos)
+                v = xfd.readline().strip()
+
+            else:
+                v = None
+
+            if improved_probesets and psid in improved_probesets and v:
                 ofd.write(v)
             elif v:
                 ofd.write(v)
@@ -535,6 +555,8 @@ def merge_static_column_file(
                 ofd.write(line)
             ofd.write('\n')
 
-        for k, v in norm_data.items():
+        for key in index:
+            pos = index.pop(key)
+            xfd.seek(pos)
+            v = xfd.readline()
             ofd.write(v)
-            ofd.write('\n')
