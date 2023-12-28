@@ -556,7 +556,16 @@ def merge_static_column_file(
             ofd.write('\n')
 
         for key in index:
-            pos = index.pop(key)
+
+            match = PROBESET_ID_PTN.match(key)
+            assert match
+
+            psid = match.group(1)
+
+            if target_probesets and psid not in target_probesets:
+                continue
+
+            pos = index[key]
             xfd.seek(pos)
             v = xfd.readline()
             ofd.write(v)
