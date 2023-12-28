@@ -28,7 +28,7 @@ def test_merge_static_column_file(tmp_path):
         default_file,
         mod_file,
         actual_filtered_file,
-        target_probesets={'AX-200', 'AX-300'},
+        target_probesets={'AX-200', 'AX-300', 'AX-400'},
     )
     assert filecmp.cmp(
         expected_filtered_file,
