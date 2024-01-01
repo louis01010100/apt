@@ -536,18 +536,19 @@ def merge_static_column_file(
 
             psid = match.group(1)
 
+            pos = index.pop(key, None)
+
             if target_probesets and psid not in target_probesets:
                 continue
 
-            if key in index:
-                pos = index.pop(key)
+            if pos:
                 xfd.seek(pos)
                 v = xfd.readline().strip()
-
             else:
                 v = None
 
-            if improved_probesets and psid in improved_probesets and v:
+            if improved_probesets and psid in improved_probesets:
+                assert v
                 ofd.write(v)
             elif v:
                 ofd.write(v)
