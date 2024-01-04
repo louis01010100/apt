@@ -264,6 +264,7 @@ class Workflow():
         snv_dir: Path,
         output_dir: Path,
         lib_dir: Path,
+        probesets_file: Path,
         export_vcf: bool,
         export_plink: bool,
     ):
@@ -271,13 +272,14 @@ class Workflow():
 
         if export_vcf:
             vcf_dir = output_dir / 'vcf'
-            self._export_vcf(snv_dir, vcf_dir, annotdb_file)
+            self._export_vcf(snv_dir, vcf_dir, annotdb_file, probesets_file)
         if export_plink:
             plink_dir = output_dir / 'plink'
-            self._export_plink(snv_dir, plink_dir, annotdb_file)
+            self._export_plink(snv_dir, plink_dir, annotdb_file,
+                               probesets_file)
 
-    def _export_vcf(self, snv_dir: Path, output_dir: Path,
-                    annotdb_file: Path):
+    def _export_vcf(self, snv_dir: Path, output_dir: Path, annotdb_file: Path,
+                    probesets_file: Path):
 
         output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -291,6 +293,7 @@ class Workflow():
             calls_file=calls_file,
             performance_file=performance_file,
             annotation_file=annotdb_file,
+            probesets_file=probesets_file,
             export_vcf_file=tmp_vcf,
         )
         cmd.execute()
@@ -299,7 +302,7 @@ class Workflow():
         tmp_vcf.rename(final_vcf)
 
     def _export_plink(self, snv_dir: Path, output_dir: Path,
-                      annotdb_file: Path):
+                      annotdb_file: Path, probesets_file: Path):
 
         output_dir.mkdir(exist_ok=True)
 
@@ -344,6 +347,7 @@ class Workflow():
         cmd = self.apt.apt_format_result_plink(
             output_path=output_dir,
             calls_file=snv_dir / config.CALLS_FILENAME,
+            probesets_file=probesets_file,
             annotation_file=annotdb_file,
             plink_file=plink_file,
             snp_list_file=snv_dir / config.RECOMMENDED_FILENAME,

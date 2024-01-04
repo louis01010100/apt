@@ -635,6 +635,7 @@ class Apt():
         calls_file,
         performance_file,
         annotation_file,
+        probesets_file,
         export_vcf_file,
     ):
         executable = self.cmd_paths['apt-format-result']
@@ -643,12 +644,15 @@ class Apt():
             f"{executable}\n"
             f"    --log-file             {output_path / 'apt-format-result-vcf.log'}\n"
             f"    --calls-file           {calls_file}\n"
-            f"    --performance-file     {performance_file}\n"
             f"    --annotation-file      {annotation_file}\n"
             f"    --export-chr-shortname True \n"
             f"    --export-confidence    True \n"
             f"    --export-vcf-file      {export_vcf_file}\n"
             '')
+        if probesets_file:
+            cmd += f"    --snp-list-file        {probesets_file}\n"
+        else:
+            cmd += f"    --performance-file     {performance_file}\n"
 
         return Command(cmd, check_log=True)
 
@@ -659,7 +663,7 @@ class Apt():
         annotation_file,
         plink_file,
         pedigree_file,
-        snp_list_file=None,
+        probesets_file=None,
     ):
         executable = self.cmd_paths['apt-format-result']
 
@@ -674,9 +678,8 @@ class Apt():
             f"    --export-plinkt-file    {plink_file}\n"
             f"    --pedigree-file        {pedigree_file}\n"
             '')
-        if snp_list_file:
-
-            cmd += f"    --snp-list-file        {snp_list_file}\n"
+        if probesets_file:
+            cmd += f"    --snp-list-file        {probesets_file}\n"
 
         return Command(cmd, check_log=True)
 
