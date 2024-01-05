@@ -272,11 +272,20 @@ class Workflow():
 
         if export_vcf:
             vcf_dir = output_dir / 'vcf'
-            self._export_vcf(snv_dir, vcf_dir, annotdb_file, probesets_file)
+            self._export_vcf(
+                snv_dir,
+                vcf_dir,
+                annotdb_file,
+                probesets_file,
+            )
         if export_plink:
             plink_dir = output_dir / 'plink'
-            self._export_plink(snv_dir, plink_dir, annotdb_file,
-                               probesets_file)
+            self._export_plink(
+                snv_dir,
+                plink_dir,
+                annotdb_file,
+                probesets_file,
+            )
 
     def _export_vcf(self, snv_dir: Path, output_dir: Path, annotdb_file: Path,
                     probesets_file: Path):
@@ -301,8 +310,13 @@ class Workflow():
         final_vcf = tmp_vcf.with_suffix('')
         tmp_vcf.rename(final_vcf)
 
-    def _export_plink(self, snv_dir: Path, output_dir: Path,
-                      annotdb_file: Path, probesets_file: Path):
+    def _export_plink(
+        self,
+        snv_dir: Path,
+        output_dir: Path,
+        annotdb_file: Path,
+        probesets_file: Path = None,
+    ):
 
         output_dir.mkdir(exist_ok=True)
 
@@ -344,13 +358,15 @@ class Workflow():
 
         plink_file = output_dir / 'AxiomGT1'
 
+        if not probesets_file:
+            probesets_file = snv_dir / config.RECOMMENDED_FILENAME
+
         cmd = self.apt.apt_format_result_plink(
             output_path=output_dir,
             calls_file=snv_dir / config.CALLS_FILENAME,
             probesets_file=probesets_file,
             annotation_file=annotdb_file,
             plink_file=plink_file,
-            snp_list_file=snv_dir / config.RECOMMENDED_FILENAME,
             pedigree_file=output_dir / config.PEDIGREE_FILENAME,
         )
 
