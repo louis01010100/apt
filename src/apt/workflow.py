@@ -264,9 +264,9 @@ class Workflow():
         snv_dir: Path,
         output_dir: Path,
         lib_dir: Path,
-        probesets_file: Path,
         export_vcf: bool,
         export_plink: bool,
+        probesets_file: Path = None,
     ):
         annotdb_file = utils.find_file(lib_dir, '*annot.db')
 

@@ -50,11 +50,11 @@ def test_merge_static_column_file(tmp_path):
         default_file,
         mod_file,
         actual_target_improved_file,
-        target_probesets={'AX-100', 'AX-200', 'AX-300', 'AX-500'},
         improved_probesets={'AX-300'},
+        target_probesets={'AX-100', 'AX-200', 'AX-300', 'AX-500'},
     )
     assert filecmp.cmp(
-        expected_target_file,
+        expected_target_improved_file,
         actual_target_improved_file,
         shallow=False,
     )
