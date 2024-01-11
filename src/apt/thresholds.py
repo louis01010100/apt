@@ -141,6 +141,8 @@ def load_thresholds(
     thresholds = Thresholds(filepath)
     if het_so_cutoff:
         thresholds._values['snp_qc']['het-so-cutoff'] = str(het_so_cutoff)
+        thresholds._values['snp_qc']['het-so-XChr-cutoff'] = str(
+            het_so_cutoff)
 
     return thresholds
 
