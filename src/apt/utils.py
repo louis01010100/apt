@@ -507,6 +507,39 @@ def _create_index(data_file):
     return index
 
 
+def merge_dynamic_column_file(
+        default_file: Path,
+        modified_file: Path,
+        merged_file: Path,
+        improved_probesets: set = set(),
+        target_probesets: set = set(),
+):
+    default = pd.read_csv(
+        default_file,
+        comment='#',
+        header=0,
+        sep='\t',
+        dtype='str',
+    )
+
+    modified = pd.read_csv(
+        modified_file,
+        comment='#',
+        header=0,
+        sep='\t',
+        dtype='str',
+    )
+
+    default = default[lambda x: ~x['probeset_id'].isin(improved_probesets)]
+    modified = modified[lambda x: x['probeset_id'].isin(improved_probesets)]
+
+    data = pd.concat([default, modified])
+
+    data = data[lambda x: x['probeset_id'].isin(target_probesets)]
+
+    data.to_csv(merged_file, header=True, index=False, sep='\t')
+
+
 def merge_static_column_file(
         default_file: Path,
         modified_file: Path,
