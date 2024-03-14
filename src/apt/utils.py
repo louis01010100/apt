@@ -535,7 +535,8 @@ def merge_dynamic_column_file(
 
     data = pd.concat([default, modified])
 
-    data = data[lambda x: x['probeset_id'].isin(target_probesets)]
+    if target_probests:
+        data = data[lambda x: x['probeset_id'].isin(target_probesets)]
 
     data.to_csv(merged_file, header=True, index=False, sep='\t')
 
