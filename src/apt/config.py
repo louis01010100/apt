@@ -8,7 +8,7 @@ BIN_DIRS = [
 APT_PROGRAMS = [
     'apt-package-util',
     'apt-dmet-translation',
-    'apt-geno-qc',
+    'apt-geno-qc-axiom',
     'apt-genotype-axiom',
     'apt-summary-genotype-axiom',
     'ps-metrics',

@@ -30,10 +30,9 @@ def find_apt_cmds(apt_cmds, bin_dirs):
     for cmd in apt_cmds:
         cmd_path = find_cmd_path(cmd, bin_dirs)
         if not cmd_path:
-            utils.error(
-                f'Error: cannot find needed APT program {cmd}, '
-                f'set the environment variable AXIOM_TOP to its location,'
-                f'or specify the APT bin folder using --apt-bin-dir,')
+            error(f'Error: cannot find needed APT program {cmd}, '
+                  f'set the environment variable AXIOM_TOP to its location,'
+                  f'or specify the APT bin folder using --apt-bin-dir,')
         apt_cmd_paths[cmd] = cmd_path
     return apt_cmd_paths
 
